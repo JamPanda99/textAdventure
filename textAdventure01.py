@@ -4,7 +4,6 @@ map = {
             'to the prison door' : 'prisonDoor001',
             'to the desk' : 'prisonDesk001',
             'to the bed' : 'prisonBed001',
-            'to the desk' : 'prisonDesk001',
             'to thebox' : 'prisonBox001',
             'onto the carpet' : 'prisonCarpet001'
         },
