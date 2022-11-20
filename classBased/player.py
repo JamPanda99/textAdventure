@@ -1,52 +1,78 @@
-import map
-location = 'prison cell'
+import map, items
+location = 'prisonCell001'
 inventory = []
+exit = False
 
-#           move -------   get item   use item------
-actions = ['move', 'open', 'take', 'use', 'read']
+actions = {
+    #move to location normal
+    'move to '  :   1,
+    'go to '    :   1,
+    'travel to ':   1,
+    #move to special locations type1 (e.g. doors, drawers, boxes...)
+    'open '     :   2,
+    #take item
+    'take '     :   3,
+    #use item normal
+    'use '      :   4,
+    #use special item type1 (e.g. book, letter...)
+    'read '     :   5,
+
+
+    #exits game
+    'exit'      :   999
+}
 
 def action():
-    sucsessAction = False
-    while sucsessAction == False:
-        tmpInput = input('> ')
+    successAction = False
+    while successAction == False:
+        actionType, actionSyntax = getActionType(input('> '))
 
-        match (splitInput := tmpInput.split(' ', 1))[0]:
-            case 'move':
-                print(splitInput)
-                if move(splitInput[1]):
-                    sucsessAction = True
-                
-            case 'open':
-                if move(splitInput[1]):
-                    sucsessAction = True
+        match (actionType):
+            case 1 | 2:
+                if move(actionType, actionSyntax):
+                    successAction = True
             
-            case 'take':
-                if takeItem(splitInput[1]):
-                    sucsessAction = True
+            case 3:
+                if takeItem(actionType, actionSyntax):
+                    successAction = True
 
-            case 'read':
-                print(splitInput)
-                if interactItem(splitInput[1]):
-                    sucsessAction = True
+            case 4:
+                if interactItem(actionType, actionSyntax):
+                    successAction = True
 
-def move(destination):
+            case 999:
+                global exit
+                exit = True
+                successAction = True
+
+def getActionType(actionCommand):
+    global actions
+    for i in actions:
+        if i in actionCommand:
+            return actions[i], actionCommand.split(i)[1]
+    return -1, 'null'
+
+def move(actionType, destination):
     global location
-    if destination not in map.mapDict[location].getDestinations():
+    tmp = {}
+    for i in map.mapDict[location].getDestinationIDs():
+        tmp.update({map.mapDict[i].getName() : i})
+
+    if destination not in tmp:
         return False
     
-    location = destination
-    #print(map[location]['message'])
+    location = tmp[destination]
     return True
 
-def takeItem(itemName):
+def takeItem(actionType, itemId):
     global location
-    if (itemName in inventory) or (itemName not in map[location]['items']):# or (items[itemID]['requirements'][0] != 'none'):
+    if (itemId in inventory) or (itemId not in map.mapDict[location].getItems()):# or (items[itemID]['requirements'][0] != 'none'):
         return False
     
-    inventory.update({itemName : map[location]['items'][itemName]})
+    inventory.update(itemId)
     return True
 
-def interactItem(itemName):
+def interactItem(actionType, itemName):
     if itemName in inventory and items[inventory[itemName]]['type'] == 'message':
         print(items[inventory[itemName]]['message'])
         return True

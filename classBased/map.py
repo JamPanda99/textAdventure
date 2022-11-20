@@ -1,7 +1,8 @@
 import textAdventureLocationClass as locClass
 
 mapDict = {
-    'dev room' : locClass.Location(
+    #location ID : class instance
+    'devRoom001' : locClass.Location(
         #roomName
         'dev room',
         #desinations
@@ -14,15 +15,14 @@ mapDict = {
         }
     ),
 
-    'prison cell' : locClass.Location(
+    'prisonCell001' : locClass.Location(
         'prison cell',
         [
-            'prisonDoor001',
-            'prison desk',
-            'prisonBed001',
+            #'prisonDoor001',
             'prisonDesk001',
-            'prisonBox001',
-            'prisonCarpet001'
+            'prisonBed001',
+            #'prisonBox001',
+            #'prisonCarpet001'
         ],
         [
             'none'
@@ -32,11 +32,11 @@ mapDict = {
         }
     ),
 
-    'prison desk' : locClass.Location(
+    'prisonDesk001' : locClass.Location(
         'prison desk',
         [
-            'prison cell',
-            'prison desk drawer'
+            'prisonCell001',
+            'prisonDeskDrawer001'
         ],
         [
             'none'
@@ -46,10 +46,10 @@ mapDict = {
         }
     ),
 
-    'prison desk drawer' : locClass.Location(
+    'prisonDeskDrawer001' : locClass.Location(
         'desk drawer',
         [
-            'prison desk'
+            'prisonDesk001'
         ],
         [
             'letter'
@@ -57,5 +57,18 @@ mapDict = {
         {
             'null' : True
         }
-    )
+    ),
+
+    'prisonBed001' : locClass.Location(
+        'prison bed',
+        [
+            'prisonCell001'
+        ],
+        [
+            'none'
+        ],
+        {
+            'null' : True
+        }
+    ),
 }

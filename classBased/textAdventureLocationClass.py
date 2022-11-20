@@ -9,13 +9,16 @@ class Location:
     def getName(self):
         return self.name
 
-    def getDestinations(self):
+    def getDestinationIDs(self):
         return self.destinations
     
+    def getItems(self):
+        return self.items
+
     def addDestination(self, newDestinations):
         for i in newDestinations:
             self.destinations.append(i)
 
-    def setRequirement(self, reqName, status):
+    def setRequirementStatus(self, reqName, status):
         if reqName in self.requirments:
             self.requirments[reqName] = status

@@ -53,7 +53,7 @@ items = {
         'name' : 'letter from devs',
         'requirements' : ['none'],
         'type' : 'message',
-        'message' : 'Your not ment to find this'
+        'message' : 'Your not meant to find this'
     }
 }
 
@@ -65,17 +65,17 @@ inventory = {}
 
 def outputRoutesItems(dictionary):
     for i in dictionary:
-        print(i)
+        print(f' - {i}')
 
 
 def action():
     sucsessAction = False
     while sucsessAction == False:
-        tmpInput = input()
+        tmpInput = input('\n> ')
 
         match (splitInput := tmpInput.split(' ', 1))[0]:
             case 'move':
-                print(splitInput)
+                #print(splitInput)
                 if move(splitInput[1]):
                     sucsessAction = True
                 
@@ -88,7 +88,7 @@ def action():
                     sucsessAction = True
 
             case 'read':
-                print(splitInput)
+                #print(splitInput)
                 if interactItem(splitInput[1]):
                     sucsessAction = True
 
