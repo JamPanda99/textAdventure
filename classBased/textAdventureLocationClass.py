@@ -1,5 +1,5 @@
 class Location:
-    #Name - string | destinations - list of map indexes | items - list of items indexes | requirements - dictionary of boolians
+    #Name - string | destinations - list of map indexes | items - dictionary of items names:indexes | requirements - dictionary of boolians
     def __init__(self, newName, newDestinations, newItems, newRequirements):
         self.name = newName
         self.destinations = newDestinations

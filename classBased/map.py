@@ -8,7 +8,7 @@ mapDict = {
         #desinations
         [],
         #items
-        [],
+        {},
         #reqirements to enter
         {
             'beADev' : False
@@ -21,12 +21,12 @@ mapDict = {
             #'prisonDoor001',
             'prisonDesk001',
             'prisonBed001',
-            #'prisonBox001',
+            'prisonBox001',
             #'prisonCarpet001'
         ],
-        [
+        {
             'none'
-        ],
+        },
         {
             'null' : True
         }
@@ -38,9 +38,9 @@ mapDict = {
             'prisonCell001',
             'prisonDeskDrawer001'
         ],
-        [
+        {
             'none'
-        ],
+        },
         {
             'null' : True
         }
@@ -51,9 +51,9 @@ mapDict = {
         [
             'prisonDesk001'
         ],
-        [
-            'letter'
-        ],
+        {
+            'letter' : 'prisonLetter'
+        },
         {
             'null' : True
         }
@@ -64,9 +64,22 @@ mapDict = {
         [
             'prisonCell001'
         ],
+        {
+            'pillow' : 'prisonBedPillow'
+        },
+        {
+            'null' : True
+        }
+    ),
+
+    'prisonBox001' : locClass.Location(
+        'prison bed',
         [
-            'none'
+            'prisonCell001'
         ],
+        {
+            'none'
+        },
         {
             'null' : True
         }

@@ -1,4 +1,4 @@
-import textAdventureLocationClass as locClass, textAdventureItemClass as itemClass, map, player
+import map, player
 playing = True
 
 
@@ -7,7 +7,7 @@ def exitGame():
     playing = False
 
 while playing:
-    print(map.mapDict[player.location].getName())
+    print(f"\n-------------------------\nYou are at '{map.mapDict[player.stats['location']].getName()}'\n-------------------------")
     player.action()
     if player.exit:
         exitGame()

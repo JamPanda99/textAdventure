@@ -1,49 +1,36 @@
 import map, items
-location = 'prisonCell001'
-inventory = []
+
+stats = {
+    'location' : 'prisonCell001',
+    'inventory' : {
+        'a magic potion from the devs' : 'devPotion'
+    }
+}
+
 exit = False
 
 actions = {
+    #print locations player can travel too
+    'look around'       :   0,
+    #print inventory of player
+    'open inventory'    :   1,
     #move to location normal
-    'move to '  :   1,
-    'go to '    :   1,
-    'travel to ':   1,
+    'move to '          :   100,
+    'go to '            :   100,
+    'travel to '        :   100,
     #move to special locations type1 (e.g. doors, drawers, boxes...)
-    'open '     :   2,
+    'open '             :   101,
     #take item
-    'take '     :   3,
-    #use item normal
-    'use '      :   4,
-    #use special item type1 (e.g. book, letter...)
-    'read '     :   5,
+    'take '             :   200,
+    #use functionRunnerItem item
+    'use '              :   300,
+    #use Message item
+    'read '             :   301,
 
 
     #exits game
-    'exit'      :   999
+    'exit'              :   999
 }
-
-def action():
-    successAction = False
-    while successAction == False:
-        actionType, actionSyntax = getActionType(input('> '))
-
-        match (actionType):
-            case 1 | 2:
-                if move(actionType, actionSyntax):
-                    successAction = True
-            
-            case 3:
-                if takeItem(actionType, actionSyntax):
-                    successAction = True
-
-            case 4:
-                if interactItem(actionType, actionSyntax):
-                    successAction = True
-
-            case 999:
-                global exit
-                exit = True
-                successAction = True
 
 def getActionType(actionCommand):
     global actions
@@ -53,27 +40,71 @@ def getActionType(actionCommand):
     return -1, 'null'
 
 def move(actionType, destination):
-    global location
+    global stats
     tmp = {}
-    for i in map.mapDict[location].getDestinationIDs():
+    for i in map.mapDict[stats['location']].getDestinationIDs():
         tmp.update({map.mapDict[i].getName() : i})
 
     if destination not in tmp:
         return False
-    
-    location = tmp[destination]
+
+    stats['location'] = tmp[destination]
+    print(f"\nYou move to {destination}")
     return True
 
-def takeItem(actionType, itemId):
-    global location
-    if (itemId in inventory) or (itemId not in map.mapDict[location].getItems()):# or (items[itemID]['requirements'][0] != 'none'):
+def takeItem(actionType, itemName):
+    global stats
+    if (itemName in stats['inventory']) or (itemName not in map.mapDict[stats['location']].getItems()):# or (items[itemID]['requirements'][0] != 'none'):
         return False
     
-    inventory.update(itemId)
+    tmp = map.mapDict[stats['location']].getItems()[itemName]
+    stats['inventory'].update({items.itemDict[tmp].getName() : tmp})
     return True
 
 def interactItem(actionType, itemName):
-    if itemName in inventory and items[inventory[itemName]]['type'] == 'message':
-        print(items[inventory[itemName]]['message'])
-        return True
-    return False
+    if (itemName not in stats['inventory']) or (actionType not in items.itemDict[stats['inventory'][itemName]].getCommandIDs()):
+        return False
+
+    if actionType == 300:
+        items.itemDict[stats['inventory'][itemName]].activateItem(stats)
+
+def action():
+    successAction = False
+    while successAction == False:
+        actionType, actionSyntax = getActionType(input('> '))
+
+        match (actionType):
+            case 0:
+                print()
+                tmp = []
+                for i in map.mapDict[stats['location']].getDestinationIDs():
+                    print(f' - {map.mapDict[i].getName()}')
+
+                successAction = True
+            
+            case 1:
+                print()
+                for i in stats['inventory']:
+                    print(i)
+
+                successAction = True
+
+            case 100 | 101:
+                if move(actionType, actionSyntax):
+                    successAction = True
+            
+            case 200:
+                if takeItem(actionType, actionSyntax):
+                    successAction = True
+
+            case 300 | 301:
+                if interactItem(actionType, actionSyntax):
+                    successAction = True
+
+            case 999:
+                global exit
+                exit = True
+                successAction = True
+
+        if not successAction:
+            print('Action Failed')
