@@ -1,8 +1,11 @@
-import map, player
+import map, player, saveDataManager
 playing = True
 
+#load data
+player.stats = saveDataManager.load()
 
 def exitGame():
+    saveDataManager.save(player.stats)
     global playing
     playing = False
 

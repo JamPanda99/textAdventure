@@ -1,9 +1,8 @@
 import map, items
 
 stats = {
-    'location' : 'prisonCell001',
+    'location' : '',
     'inventory' : {
-        'a magic potion from the devs' : 'devPotion'
     }
 }
 
@@ -85,7 +84,8 @@ def action():
             case 1:
                 print()
                 for i in stats['inventory']:
-                    print(i)
+                    if i != 'null':
+                        print(i)
 
                 successAction = True
 
